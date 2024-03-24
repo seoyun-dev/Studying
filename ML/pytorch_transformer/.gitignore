@@ -1,4 +1,4 @@
 .DS_Store
 datasets/
 */.ipynb_checkpoints/
-ML/pytorch_transformer/models
+models/
