@@ -4,3 +4,5 @@ RecoSys/Data/
 *.DS_Store
 ML/pytorch_transformer/models
 ML/pytorch_transformer/models/
+ML/pytorch_transformer/datasets
+ML/pytorch_transformer/datasets/
