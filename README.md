@@ -5,10 +5,6 @@
 .
 ├── BDA (빅데이터 분석)
 │   
-├── CS (Computer Science)
-│
-├── Git
-│   
 ├── Java
 │  
 ├── ML (Machine Learning)
@@ -18,10 +14,8 @@
 │   ├── cs231n_study
 │   └── pytorch_transformer
 │
-├── Python
-│   ├── jump2python  
-│   ├── python_21 
-│   └── python_HUBO_23_1
-│       
-└── Spring
+└── Python
+    ├── jump2python  
+    ├── python_21 
+    └── python_HUBO_23_1       
 ```
