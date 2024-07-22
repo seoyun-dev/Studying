@@ -1,6 +1,7 @@
 *.csv
 RecoSys/Data/
 *.DS_Store
+*.pptx
 ML/pytorch_transformer/models
 ML/pytorch_transformer/models/
 ML/pytorch_transformer/datasets
