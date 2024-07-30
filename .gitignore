@@ -7,3 +7,9 @@ ML/pytorch_transformer/models/
 ML/pytorch_transformer/datasets
 ML/pytorch_transformer/datasets/
 ML/pytorch_transformer/09장 객체 탐지/예제 9.20~9.24 Mask R-CNN 모델 실습.ipynb
+
+ML/deep-learning-projects/03_손글씨_숫자_이미지_분류/data
+ML/deep-learning-projects/07_실시간_비명_감지_시스템/example
+ML/deep-learning-projects/07_실시간_비명_감지_시스템/img
+ML/deep-learning-projects/08_수능_영어_풀기/data
+ML/deep-learning-projects/08_수능_영어_풀기/models
