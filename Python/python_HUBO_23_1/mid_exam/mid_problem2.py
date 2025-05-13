@@ -3,7 +3,7 @@ from cs1robots import *
 # load_world('worlds/hurdles1.wld')
 # load_world('worlds/hurdles2.wld')
 # load_world('worlds/hurdles3.wld')
-load_world('worlds/hurdles4.wld')
+load_world('python_HUBO_23_1/HUBO/worlds/hurdles4.wld')
 
 hubo = Robot()
 

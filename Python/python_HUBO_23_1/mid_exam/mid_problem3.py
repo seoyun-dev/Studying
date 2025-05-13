@@ -1,7 +1,7 @@
 from cs1robots import *
 
 # load_world('worlds/rain1.wld')
-load_world('worlds/rain2.wld')
+load_world('python_HUBO_23_1/HUBO/worlds/rain2.wld')
 hubo = Robot(beepers=10, street=6, avenue=2)
 
 def turn_right():
