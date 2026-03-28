@@ -1,0 +1,30 @@
+{
+  "마예은": {
+    "name": "마예은",
+    "email": "dhn04100@naver.com",
+    "role": "friend",
+    "notes": "",
+    "updated_at": "2026-03-27T02:08:15.090780"
+  },
+  "dhn04100": {
+    "name": "dhn04100",
+    "email": "dhn04100@naver.com",
+    "role": "friend",
+    "notes": "Saved per user request; actual recipient personal name not provided.",
+    "updated_at": "2026-03-27T01:53:40.087815"
+  },
+  "박애슐리": {
+    "name": "박애슐리",
+    "email": "dhn04100@naver.com",
+    "role": "colleague",
+    "notes": "",
+    "updated_at": "2026-03-27T02:40:59.017202"
+  },
+  "김명준": {
+    "name": "김명준",
+    "email": "tjmjtjmj2237@naver.com",
+    "role": "friend",
+    "notes": "",
+    "updated_at": "2026-03-27T23:42:18.033709"
+  }
+}
