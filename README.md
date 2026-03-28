@@ -16,8 +16,7 @@
 │   ├── RecoSys
 │   ├── cs231n_study
 │   ├── metacode_seminar
-│   ├── pytorch_transformer
-│   └── rag2
+│   └── pytorch_transformer
 └── Python
     ├── jump2python
     ├── python_21
