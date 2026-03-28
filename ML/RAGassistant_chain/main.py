@@ -10,7 +10,7 @@ import re
 from contextlib import redirect_stderr
 from email.message import EmailMessage
 from pathlib import Path
-from typing import TypedDict
+from typing import Annotated, TypedDict
 
 from dotenv import load_dotenv
 from google.auth.transport.requests import Request
@@ -31,6 +31,8 @@ from langchain_community.vectorstores import Chroma
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
+from langgraph.graph.message import add_messages
+from openai import BadRequestError
 from pydantic import BaseModel, Field
 
 
@@ -61,7 +63,7 @@ class EmailContent(BaseModel):
 
 
 class AssistantState(TypedDict, total=False):
-    messages: list[BaseMessage]
+    messages: Annotated[list[BaseMessage], add_messages]
     final_response: str
 
 
@@ -760,13 +762,42 @@ def build_agent():
     )
 
 
+def make_thread_id(prefix: str) -> str:
+    return f"{prefix}_{dt.datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
+
+
+def invoke_with_recovery(agent, payload, thread_id: str):
+    """
+    HITL 이후 남은 tool 메시지 때문에 thread 상태가 깨지면 새 thread로 한 번 복구한다.
+    """
+    try:
+        result = agent.invoke(
+            payload,
+            config={"configurable": {"thread_id": thread_id}},
+            version="v2",
+        )
+        return result, thread_id
+    except BadRequestError as error:
+        message = str(error)
+        if "messages with role 'tool'" not in message:
+            raise
+        fresh_thread_id = make_thread_id("chat")
+        print("\nSession state was reset after a previous tool action. Retrying with a fresh chat session.")
+        result = agent.invoke(
+            payload,
+            config={"configurable": {"thread_id": fresh_thread_id}},
+            version="v2",
+        )
+        return result, fresh_thread_id
+
+
 def ask_once(question: str) -> str:
     """
     단일 질의 모드.
     매 실행마다 별도 thread_id를 만들어 한 번 질문하고 끝낸다.
     """
     agent = build_agent()
-    thread_id = f"single_{dt.datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
+    thread_id = make_thread_id("single")
     result = agent.invoke(
         {"messages": [{"role": "user", "content": question}]},
         config={"configurable": {"thread_id": thread_id}},
@@ -827,7 +858,7 @@ def run_chat_mode():
     InMemorySaver 기반 checkpointer로 현재 세션의 단기 메모리를 유지한다.
     """
     agent = build_agent()
-    thread_id = f"chat_{dt.datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
+    thread_id = make_thread_id("chat")
     print("Chat mode started. Type 'exit' to finish.")
 
     while True:
@@ -838,13 +869,15 @@ def run_chat_mode():
             print("Chat ended.")
             break
 
-        result = agent.invoke(
+        result, thread_id = invoke_with_recovery(
+            agent,
             {"messages": [{"role": "user", "content": question}]},
-            config={"configurable": {"thread_id": thread_id}},
-            version="v2",
+            thread_id,
         )
+        had_interrupt = False
 
         while get_result_value(result, "__interrupt__", None):
+            had_interrupt = True
             interrupt_payload = get_result_value(result, "__interrupt__")[0].value
             print("\nApproval required before sending.")
             for idx, action in enumerate(interrupt_payload.get("action_requests", []), start=1):
@@ -867,13 +900,16 @@ def run_chat_mode():
                     reject_decision["message"] = reason
                 resume_payload = {"decisions": [reject_decision]}
 
-            result = agent.invoke(
+            result, thread_id = invoke_with_recovery(
+                agent,
                 Command(resume=resume_payload),
-                config={"configurable": {"thread_id": thread_id}},
-                version="v2",
+                thread_id,
             )
 
         print_assistant_message(get_final_response(result))
+
+        if had_interrupt:
+            thread_id = make_thread_id("chat")
 
 
 def main():
