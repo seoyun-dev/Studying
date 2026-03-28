@@ -1,6 +1,6 @@
 # Research RAG Assistant
 
-개인 연구 문서를 기반으로 질문에 답하고, 필요할 때 외부 검색을 결합하며, 결과를 이메일 draft 또는 실제 전송 액션까지 확장할 수 있는 `agentic RAG assistant PoC`입니다.
+개인 연구 문서를 기반으로 질문에 답하고, 필요할 때 외부 검색을 결합하며, 결과를 이메일 draft 또는 실제 전송 액션까지 확장할 수 있는 `RAG 기반 연구 보조 assistant PoC`입니다.
 
 ## 프로젝트 소개
 
@@ -176,7 +176,7 @@ Gmail OAuth 클라이언트 파일은 아래 경로에 둡니다.
 - 이메일 draft/action tool
 - human-in-the-loop middleware
 
-즉 단순 튜토리얼형 RAG가 아니라, action과 memory를 포함한 `agentic workflow`를 다루는 PoC입니다.
+즉 단순 튜토리얼형 RAG가 아니라, action과 memory를 포함한 `agent workflow`를 다루는 PoC입니다.
 
 ## 한계
 
@@ -185,4 +185,3 @@ Gmail OAuth 클라이언트 파일은 아래 경로에 둡니다.
 - 검색 전략 분기는 규칙 기반 로직입니다
 - UI는 터미널 중심이며 별도 웹 인터페이스는 제공하지 않습니다
 - 평가 지표와 자동 테스트는 아직 제한적입니다
-
